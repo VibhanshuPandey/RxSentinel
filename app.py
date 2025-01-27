@@ -55,7 +55,7 @@ def classify_sentiment(score):
     else:
         return "Neutral"
 
-# Add Sentiment Analysis to Data
+# Adding Sentiment Analysis
 filtered_data['sentiment_score'] = filtered_data['review'].apply(analyze_sentiment)
 filtered_data['sentiment'] = filtered_data['sentiment_score'].apply(classify_sentiment)
 
@@ -115,32 +115,31 @@ def generate_pdf_report(data, selected_drugs):
     pdf.add_page()
     pdf.set_font("Arial", size=12)
     
-    # Add Title
     pdf.set_font("Arial", style="B", size=16)  # Bold font for the title
     pdf.cell(200, 10, txt="RxSentinel Drug Analysis Report", ln=True, align="C")
-    pdf.set_font("Arial", size=12)  # Reset font to normal
+    pdf.set_font("Arial", size=12)
 
-    pdf.ln(10)  # Add some space
+    pdf.ln(10)  # Adds some space
 
-    # Add Sentiment Analysis
+    # Sentiment Analysis
     pdf.cell(200, 10, txt="Sentiment Analysis", ln=True, align="L")
     sentiment_counts = data['sentiment'].value_counts()
     for sentiment, count in sentiment_counts.items():
         pdf.cell(200, 10, txt=f"{sentiment}: {count}", ln=True)
     
-    pdf.ln(10)  # Add some space
+    pdf.ln(10)
 
-    # Add Drug-Specific Insights
+    # Drug-Specific Insights
     pdf.set_font("Arial", style="B", size=14)
     pdf.cell(200, 10, txt="Drug-Specific Insights", ln=True)
-    pdf.set_font("Arial", size=12)  # Reset font
+    pdf.set_font("Arial", size=12)
 
     for drug in selected_drugs:
-        pdf.set_font("Arial", style="B", size=12)  # Bold for drug name
+        pdf.set_font("Arial", style="B", size=12)  # Bold drug name
         pdf.cell(200, 10, txt=f"{drug}", ln=True)
-        pdf.set_font("Arial", size=12)  # Reset font
+        pdf.set_font("Arial", size=12)
 
-        # Filter data for the drug
+        # Filter's data for the drug
         drug_data = data[data["drugName"] == drug]
 
         # Calculate average rating and sentiment
@@ -149,7 +148,7 @@ def generate_pdf_report(data, selected_drugs):
         pdf.cell(200, 10, txt=f"Average Rating: {avg_rating:.2f}", ln=True)
         pdf.cell(200, 10, txt=f"Average Sentiment: {avg_sentiment:.2f}", ln=True)
 
-        pdf.ln(5)  # Add some space after each drug
+        pdf.ln(5)  # Adds some space after each drug
 
     # Save PDF
     pdf.output("rx_report.pdf")
